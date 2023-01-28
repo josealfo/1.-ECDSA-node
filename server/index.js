@@ -36,7 +36,7 @@ app.get("/balance/:address", (req, res) => {
 
 /* 
     Get a signature from the client-side app,
-     recove the public address from the signature
+     recover the public address from the signature
      and that is going to be the sender
      if the signature is not right, reject the transaction 
 */
