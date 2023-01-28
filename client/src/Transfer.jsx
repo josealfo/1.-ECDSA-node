@@ -22,7 +22,6 @@ function Transfer({ address, setBalance, privateKey}) {
   async function transfer(evt) {
     evt.preventDefault();
     
-    /* Debggin purposes */
     // Create a signature (with the given private key), in 3 steps
     // 1 convert the message to bytes
     console.log("Creating the signature");
@@ -38,11 +37,15 @@ function Transfer({ address, setBalance, privateKey}) {
     let signature = await secp.sign(keccakHash, privateKey, { recovered: true } );
     console.log("signature=" + signature);
 
+    /* Debgging purposes -----------------
+       I recover the public key and verify here, just to see if I was doing it right... 
+       I do the same thing in the server side
+    */    
     // Construct a public key (debugging purposes)
     const publicKeyRecovered = secp.recoverPublicKey(keccakHash, signature[0], signature[1]);
     console.log("publicKeyRecovered=" + toHex(publicKeyRecovered));
     
-    /** verify here, is simpler */
+    /** verify here, (also debugging purposes) */
     /* Verify it here in the fontend */
     const verification  = secp.verify(signature[0], keccakHash, address);
     const verification2 = secp.verify(signature[0], keccakHash, publicKeyRecovered); //without toHex()
@@ -50,7 +53,7 @@ function Transfer({ address, setBalance, privateKey}) {
     console.log("verification=", verification);
     console.log("verification2=", verification2);
     
-
+    
     try {
       const {
         data: { balance },
@@ -94,17 +97,6 @@ function Transfer({ address, setBalance, privateKey}) {
     </form>
   );
 
-  /*
-
-      <label>
-        Private Key for signing
-        <input
-          placeholder="This shouldn't be asked this way"
-          value={privKey}
-          onChange={setValue(setPrivKey)}
-        ></input>
-      </label>
-  */
 }
 
 export default Transfer;
